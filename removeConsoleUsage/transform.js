@@ -1,3 +1,4 @@
+// vim: ai ts=2 sts=2 et sw=2
 /*
  * Delete all usage of console.
  * E.g. console.log, console.warn etc.

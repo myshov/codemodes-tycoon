@@ -1,3 +1,4 @@
+// vim: ai ts=2 sts=2 et sw=2
 /*
  * Replace method sortBy by method orderBy for lodash 5
  */

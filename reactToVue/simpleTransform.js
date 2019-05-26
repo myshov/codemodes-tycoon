@@ -1,3 +1,4 @@
+// vim: ai ts=2 sts=2 et sw=2
 /*
  * EXPERIMENTAL
  * simple transformation of react functional components
