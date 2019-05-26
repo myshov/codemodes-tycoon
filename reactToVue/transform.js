@@ -120,5 +120,28 @@ export default function(fileInfo, api) {
       .forEach(path => replaceProps(path, 'ArrowFunctionExpression'))
   );
 
+  // export components as bindings
+  doc
+    .find(j.ExportDefaultDeclaration, {
+      declaration: {
+        type: 'Identifier',
+      },
+    })
+    .forEach(path => {
+      const exportedName = path.node.declaration.name;
+      doc
+        .find(j.VariableDeclarator, {
+          id: {
+            name: exportedName,
+          },
+          init: {
+            type: 'ArrowFunctionExpression',
+          },
+        })
+        .forEach(path =>
+          replaceProps(path.node.init, 'ArrowFunctionExpression')
+        );
+    });
+
   return '<script>\n' + doc.toSource() + '\n</script>';
 }
