@@ -1,6 +1,10 @@
-import React from "react";
+import React from 'react';
 
-export default ({name}) => {
+export default ({ name }) => {
   const greeting = 'Hi';
-  return <div>{greeting}, {name}</div>;
+  return (
+    <div>
+      {greeting}, {name}
+    </div>
+  );
 };
