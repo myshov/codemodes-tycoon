@@ -29,11 +29,15 @@ export default function(fileInfo, api) {
       return path;
     }
 
+
     let collection;
     if (type === 'FunctionDeclaration') {
       collection = j(path).find(j.FunctionDeclaration);
     }
     if (type === 'ArrowFunctionExpression') {
+      collection = j(path);
+    }
+    if (type === 'StandaloneFunction') {
       collection = j(path);
     }
 
@@ -120,7 +124,7 @@ export default function(fileInfo, api) {
       .forEach(path => replaceProps(path, 'ArrowFunctionExpression'))
   );
 
-  // export components as bindings
+  // export components as binding with ArrowFunctionExpression
   doc
     .find(j.ExportDefaultDeclaration, {
       declaration: {
@@ -141,6 +145,24 @@ export default function(fileInfo, api) {
         .forEach(path =>
           replaceProps(path.node.init, 'ArrowFunctionExpression')
         );
+    });
+
+  // export components as binding with FunctionDeclaration
+  doc
+    .find(j.ExportDefaultDeclaration, {
+      declaration: {
+        type: 'Identifier',
+      },
+    })
+    .forEach(path => {
+      const exportedName = path.node.declaration.name;
+      doc
+        .find(j.FunctionDeclaration, {
+          id: {
+            name: exportedName,
+          },
+        })
+        .forEach(path => replaceProps(path.node, 'StandaloneFunction'));
     });
 
   return '<script>\n' + doc.toSource() + '\n</script>';
